@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="page"></div>
+    <script src="../dist/reactivity.global.js"></script>
+    <!-- <script src="../../../node_modules/@vue/reactivity/dist/reactivity.global.js"></script> -->
+    <script>
+      const { effect, reactive } = VueReactivity;
+      let data = {
+        name: "大发发",
+        age: 12,
+        address: "",
+      };
+      const state1 = reactive(data);
+      const state2 = reactive(data);
+      const state3 = reactive(state2);
+      console.log(state1 === state2);
+
+      effect(() => {
+        state1.age = Math.random();
+        page.innerHTML = state1.name + "今年" + state1.age + "岁了";
+      });
+      state1.address;
+      setTimeout(() => {
+        state1.age = 102;
+        state1.age = 112;
+      }, 1000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="page"></div>
+    <script src="../dist/reactivity.global.js"></script>
+    <!-- <script src="../../../node_modules/@vue/reactivity/dist/reactivity.global.js"></script> -->
+    <script>
+      let waiting = false;
+
+      const { effect, reactive } = VueReactivity;
+      let data = {
+        name: "大发发",
+        age: 12,
+        address: {
+          name: "sfs",
+        },
+        flag: true,
+      };
+      let state = reactive(data);
+      let runner = effect(
+        () => {
+          console.log("render");
+          document.body.innerHTML = state.name;
+        },
+        {
+          scheduler() {
+            console.log("run");
+
+            if (!waiting) {
+              waiting = true;
+              console.log("waiting");
+              setTimeout(() => {
+                runner();
+                waiting = false;
+              }, 1000);
+            }
+          },
+        }
+      );
+      state.name = "123";
+      state.name = "343";
+      state.name = "sadf";
+      state.name = "0000";
+
+      console.log(state.address);
+      // setTimeout(() => {
+      //   state.flag = false;
+      //   setTimeout(() => {
+      //     console.log("修改name,原则上不更新");
+      //     state.name = "123";
+      //   }, 1000);
+      // }, 1000);
+    </script>
+  </body>
+</html>
