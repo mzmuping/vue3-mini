@@ -76,6 +76,7 @@ export function track(target, type, key) {
 
 //收集effect
 export function tarckEffect(dep) {
+  if (!activeEffect) return;
   let shouldTrack = !dep.has(activeEffect); //去重
   if (shouldTrack) {
     dep.add(activeEffect);

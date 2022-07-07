@@ -1,4 +1,4 @@
-import { ReacitveFlags } from "./typeProps";
+import { ReacitveFlags } from "../../shared/src/typeProps";
 import { track, trigger } from "./effect";
 import { reactive } from "./reactive";
 import { isObject } from "@vue/shared";

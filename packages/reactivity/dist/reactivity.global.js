@@ -22,7 +22,9 @@ var VueReactivity = (() => {
   __export(src_exports, {
     computed: () => computed,
     effect: () => effect,
-    reactive: () => reactive
+    reactive: () => reactive,
+    ref: () => ref,
+    watch: () => watch
   });
 
   // packages/reactivity/src/effect.ts
@@ -77,6 +79,8 @@ var VueReactivity = (() => {
     tarckEffect(dep);
   }
   function tarckEffect(dep) {
+    if (!activeEffect)
+      return;
     let shouldTrack = !dep.has(activeEffect);
     if (shouldTrack) {
       dep.add(activeEffect);
@@ -120,6 +124,9 @@ var VueReactivity = (() => {
     return typeof value === "function";
   };
   var isArray = Array.isArray;
+  var isReactive = (target) => {
+    return !!(target && target["__v_isReactive" /* IS_REACTIVE */]);
+  };
 
   // packages/reactivity/src/baseHandle.ts
   var mutableHandlers = {
@@ -150,7 +157,7 @@ var VueReactivity = (() => {
     if (!isObject(target)) {
       return;
     }
-    if (target["__v_isReactive" /* IS_REACTIVE */]) {
+    if (isReactive(target)) {
       return target;
     }
     let exisitingProxy = reactiveMap.get(target);
@@ -205,6 +212,70 @@ var VueReactivity = (() => {
       setter = getterOrOptions.set;
     }
     return new ConputedRefImpl(getter, setter);
+  };
+
+  // packages/reactivity/src/watch.ts
+  function traversal(value, set = /* @__PURE__ */ new Set()) {
+    if (!isObject(value))
+      return value;
+    if (set.has(value)) {
+      return value;
+    }
+    set.add(value);
+    for (let key in value) {
+      traversal(value[key], set);
+    }
+    return value;
+  }
+  function watch(sourse, cb) {
+    let getter;
+    if (isReactive(sourse)) {
+      getter = () => traversal(sourse);
+    } else if (typeof sourse === "function") {
+      getter = sourse;
+    } else {
+      return sourse;
+    }
+    let cleanup;
+    const onCleanup = (fn) => {
+      cleanup = fn;
+    };
+    let oldValue;
+    const job = () => {
+      if (cleanup)
+        cleanup();
+      const newValue = effect2.run();
+      cb(newValue, oldValue, onCleanup);
+      oldValue = newValue;
+    };
+    const effect2 = new ReactiveEffect(getter, job);
+    oldValue = effect2.run();
+  }
+
+  // packages/reactivity/src/ref.ts
+  function ref(value) {
+    return new RefImpl(value);
+  }
+  function toReactive(value) {
+    return isObject(value) ? reactive(value) : value;
+  }
+  var RefImpl = class {
+    constructor(rawValue) {
+      this.rawValue = rawValue;
+      this.dep = /* @__PURE__ */ new Set();
+      this._value = toReactive(rawValue);
+    }
+    get value() {
+      tarckEffect(this.dep);
+      return this._value;
+    }
+    set value(newValue) {
+      if (newValue !== this.value) {
+        this._value = toReactive(newValue);
+        this.rawValue = this._value;
+        triggerEffects(this.dep);
+      }
+    }
   };
   return __toCommonJS(src_exports);
 })();

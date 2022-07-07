@@ -1,5 +1,4 @@
-import { isObject } from "@vue/shared";
-import { ReacitveFlags } from "./typeProps";
+import { isObject, isReactive } from "@vue/shared";
 import { mutableHandlers } from "./baseHandle";
 //1)将数据转换成响应式数据
 const reactiveMap = new WeakMap(); //key只能是对象，弱引用，不会导致内存泄漏
@@ -16,7 +15,7 @@ export function reactive(target) {
    *   1) target是普通对象,获取ReacitveFlags.IS_REACTIVE为undefined,
    *   2) target是proxy对象，获取ReacitveFlags.IS_REACTIVE会走get方法，get方法里有判断
    */
-  if (target[ReacitveFlags.IS_REACTIVE]) {
+  if (isReactive(target)) {
     return target;
   }
 
