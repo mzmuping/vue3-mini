@@ -8,23 +8,36 @@
   </head>
   <body>
     <div id="page"></div>
-    <script src="../dist/reactivity.global.js"></script>
+    <!-- <script src="../dist/reactivity.global.js"></script> -->
     <!-- <script src="../../../node_modules/@vue/reactivity/dist/reactivity.global.js"></script> -->
-    <!-- <script src="../../../node_modules/vue/dist/vue.global.js"></script> -->
+    <script src="../../../node_modules/vue/dist/vue.global.js"></script>
     <script>
-      const { effect, reactive, ref } = VueReactivity;
-      const s = reactive({ name: "sfsf" });
-      const v = ref(0);
-      console.log(s);
-      let { name } = s;
-      console.log(name);
+      const { effect, reactive, ref, toRefs } = Vue; // VueReactivity;
+      let people = reactive({ eat: "吃", drink: "喝" });
+      let person = reactive({ address: [12312] });
+      Object.setPrototypeOf(person, people);
       effect(() => {
-        document.body.innerHTML = v.value;
+        console.log(person.eat, "触发几次");
+        person.address;
       });
+      person.eat = "呵呵";
+      person.address[0] = "1231";
+      console.log(person.address[0], person);
 
-      setTimeout(() => {
-        v.value = 100;
-      }, 1000);
+      function Cat(name) {
+        this.name = name;
+      }
+
+      function myNew(constructor, prototype, ...args) {
+        let newObj = Object.create(prototype || null);
+
+        constructor.apply(newObj, args);
+
+        return newObj;
+      }
+
+      let abj = myNew(Cat, null, "小猫");
+      console.log(abj);
     </script>
   </body>
 </html>
