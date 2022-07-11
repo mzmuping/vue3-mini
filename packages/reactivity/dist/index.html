@@ -14,30 +14,38 @@
     <script>
       const { effect, reactive, ref, toRefs } = Vue; // VueReactivity;
       let people = reactive({ eat: "吃", drink: "喝" });
-      let person = reactive({ address: [12312] });
-      Object.setPrototypeOf(person, people);
+      let person = reactive([{ p: ["122"] }]);
       effect(() => {
-        console.log(person.eat, "触发几次");
-        person.address;
+        // console.log(person[0].p, "触发几次");
+        console.log(person[0].p.length, "触发几次");
       });
-      person.eat = "呵呵";
-      person.address[0] = "1231";
-      console.log(person.address[0], person);
+      setTimeout(() => {
+        person[0].p.push(21);
+        setTimeout(() => {
+          person[0].p.push(344);
+        }, 1000);
+      }, 1000);
 
-      function Cat(name) {
-        this.name = name;
-      }
+      // person[0] = 1123;
+      // person.length = 0;
+      // person.push(1);
+      // person.address[0] = "1231";
+      // console.log(person.address[0], person);
 
-      function myNew(constructor, prototype, ...args) {
-        let newObj = Object.create(prototype || null);
+      // function Cat(name) {
+      //   this.name = name;
+      // }
 
-        constructor.apply(newObj, args);
+      // function myNew(constructor, prototype, ...args) {
+      //   let newObj = Object.create(prototype || null);
 
-        return newObj;
-      }
+      //   constructor.apply(newObj, args);
 
-      let abj = myNew(Cat, null, "小猫");
-      console.log(abj);
+      //   return newObj;
+      // }
+
+      // let abj = myNew(Cat, null, "小猫");
+      // console.log(abj);
     </script>
   </body>
 </html>
