@@ -28,7 +28,7 @@ export const nodeOps = {
     return node.nextSibing;
   },
   createElement(el, option) {
-    document.createElement(el, option);
+    return document.createElement(el, option);
   },
 
   createText(text) {

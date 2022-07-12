@@ -1,1 +1,8 @@
-export function patchAttr() {}
+//属性
+export function patchAttr(el, key, nextValue) {
+  if (nextValue) {
+    el.setAttribute(key, nextValue);
+  } else {
+    el.removeAttribute(key);
+  }
+}

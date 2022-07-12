@@ -6,9 +6,11 @@ export function patchEvents(el, eventName: string, nextValue) {
 
   let exits = invokers[eventName];
 
-  if (exits) {
+  //注册过
+  if (exits && nextValue) {
     exits.value = nextValue;
   } else {
+    //没注册，onClick
     let event = eventName.slice(2).toLowerCase();
 
     if (nextValue) {
@@ -16,6 +18,7 @@ export function patchEvents(el, eventName: string, nextValue) {
 
       el.addEventLister(event, invoker);
     } else if (exits) {
+      //删除
       el.removeEventLister(event, exits);
       invokers[eventName] = undefined;
     }
