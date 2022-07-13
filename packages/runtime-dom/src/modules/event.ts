@@ -16,10 +16,10 @@ export function patchEvents(el, eventName: string, nextValue) {
     if (nextValue) {
       let invoker = craeteInoker(nextValue);
 
-      el.addEventLister(event, invoker);
+      el.addEventListener(event, invoker);
     } else if (exits) {
       //删除
-      el.removeEventLister(event, exits);
+      el.removeEventListener(event, exits);
       invokers[eventName] = undefined;
     }
   }

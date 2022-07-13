@@ -10,9 +10,16 @@ export const isFunction = (value) => {
 
 export const isArray = Array.isArray;
 
+export const isString = (value) => typeof value === "string";
+
 export const assign = Object.assign;
 
 //是否响应式
 export const isReactive = (target) => {
   return !!(target && target[ReacitveFlags.IS_REACTIVE]);
 };
+
+//是否虚拟节点
+export function isVnode(value) {
+  return !!(value && value.__v_isVnode);
+}

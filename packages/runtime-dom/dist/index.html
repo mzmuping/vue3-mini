@@ -11,26 +11,27 @@
     <script src="../dist/runtime-dom.global.js"></script>
     <!-- <script src="../../../node_modules/@vue/runtime-dom/dist/runtime-dom.global.js"></script> -->
     <script>
-      let { createRenderer, h } = VueRuntimeDOM;
-      //渲染的虚拟dom
-      let renderer = createRenderer({
-        createElement(element) {
-          return document.createElement(element);
-        },
-        setElementText(el, text) {
-          el.innerHTML = text;
-        },
-        insert(el, container) {
-          container.appendChild(el);
-        },
-        patchProp(el, key, preValue, nextValue) {
-          console.log(el, key, preValue, nextValue, typeof nextValue.valueOf());
+      let { createRender, h, render } = VueRuntimeDOM;
 
-          el.setAttribute(key, `color:${nextValue.color}`);
-        },
-      });
-
-      renderer.render(h("h2", { style: { color: "red" } }, "sdfsdf"), app);
+      //h方法试给用户来用的，具备这多样性
+      //h('div',{},[])
+      //h('div',[])
+      render(
+        h(
+          "h2",
+          {
+            style: { color: "red" },
+            onClick: () => {
+              console.log(123);
+            },
+          },
+          [h("span", "点击"), "adfa"]
+        ),
+        app
+      );
+      setTimeout(() => {
+        render(null, app);
+      }, 1000);
     </script>
   </body>
 </html>
