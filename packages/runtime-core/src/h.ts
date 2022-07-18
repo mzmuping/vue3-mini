@@ -1,5 +1,5 @@
-import { isArray, isObject, isVnode } from "@vue/shared";
-import { createvnode } from "./vnode";
+import { isArray, isObject } from "@vue/shared";
+import { createvnode, isVnode } from "./vnode";
 
 export function h(type, propsChildren, children) {
   //其余的除了3个之外的肯定是孩子

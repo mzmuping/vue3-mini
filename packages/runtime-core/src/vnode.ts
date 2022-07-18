@@ -32,3 +32,14 @@ export function createvnode(type, props, children = null) {
 
   return vnode;
 }
+
+//是否虚拟节点
+export function isVnode(value) {
+  return !!(value && value.__v_isVnode);
+}
+
+//是否相同节点
+export function isSameVnode(n1, n2) {
+  //判断两个虚拟节点是否是相同节点，标签相同，key一样
+  return n1.type === n2.type && n1.key === n2.key;
+}

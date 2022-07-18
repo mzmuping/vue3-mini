@@ -8,6 +8,11 @@ export function patchStyle(el, preValue, nextValue) {
 
   if (preValue) {
     for (let key in preValue) {
+      //style属性没有
+      if (nextValue === null || nextValue === undefined) {
+        el.style = null;
+        break;
+      }
       if (nextValue[key] === null) {
         //去除没有的
         el.style[key] = null;

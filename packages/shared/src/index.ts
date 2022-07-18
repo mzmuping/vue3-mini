@@ -19,7 +19,4 @@ export const isReactive = (target) => {
   return !!(target && target[ReacitveFlags.IS_REACTIVE]);
 };
 
-//是否虚拟节点
-export function isVnode(value) {
-  return !!(value && value.__v_isVnode);
-}
+export * from "./typeProps";

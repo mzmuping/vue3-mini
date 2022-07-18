@@ -11,26 +11,50 @@
     <script src="../dist/runtime-dom.global.js"></script>
     <!-- <script src="../../../node_modules/@vue/runtime-dom/dist/runtime-dom.global.js"></script> -->
     <script>
-      let { createRender, h, render } = VueRuntimeDOM;
-
+      let { createRender, h, render, Text } = VueRuntimeDOM;
       //h方法试给用户来用的，具备这多样性
-      //h('div',{},[])
-      //h('div',[])
+
+      // h('div',[])
       render(
         h(
-          "h2",
+          "h1",
           {
             style: { color: "red" },
             onClick: () => {
               console.log(123);
             },
           },
-          [h("span", "点击"), "adfa"]
+          [
+            h("li", { key: "a", style: { color: "yellow" } }, "a"),
+            h("li", { key: "b" }, "b"),
+            h("li", { key: "c" }, "c"),
+          ]
         ),
         app
       );
+
       setTimeout(() => {
-        render(null, app);
+        render(
+          h(
+            "h1",
+            {
+              style: { color: "#000" },
+              onClick: () => {
+                console.log(123);
+              },
+            },
+            [
+              h("li", { key: "d" }, "dd"),
+              h("li", { key: "a" }, "aa"),
+              h("li", { key: "b" }, "bb"),
+              h("li", { key: "c" }, "cc"),
+              // h("li", { key: "e" }, "e"),
+              // h("li", { key: "b" }, "bd"),
+              // h("li", { key: "c" }, "cd"),
+            ]
+          ),
+          app
+        );
       }, 1000);
     </script>
   </body>

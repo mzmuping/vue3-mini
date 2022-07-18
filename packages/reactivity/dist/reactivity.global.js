@@ -118,6 +118,9 @@ var VueReactivity = (() => {
     effect2.deps.length = 0;
   }
 
+  // packages/shared/src/typeProps.ts
+  var Text = Symbol("Text");
+
   // packages/shared/src/index.ts
   var isObject = (value) => {
     return typeof value === "object" && value !== null;

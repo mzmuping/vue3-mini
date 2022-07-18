@@ -9,3 +9,5 @@ export function render(vnode, container) {
 }
 
 export * from "@vue/runtime-core";
+
+export { Text } from "packages/shared/src/typeProps";
